@@ -1,18 +1,15 @@
 <?php
 include 'baglan.php';
-include 'curl.php';
 
-// Access the exchange rate values, e.g. GBP:
+$pullData = $db->query("Select * from try");
+while ($row = $pullData->fetch(PDO::FETCH_ASSOC)) {
+    $data[] = $row;
+  }
 
-$dataPoints = array(
-    array("y" => 25, "label" => "Sunday"),
-    array("y" => 15, "label" => "Monday"),
-    array("y" => 25, "label" => "Tuesday"),
-    array("y" => 5, "label" => "Wednesday"),
-    array("y" => 10, "label" => "Thursday"),
-    array("y" => 0, "label" => "Friday"),
-    array("y" => 20, "label" => "Saturday")
-);
+foreach ($data as $key => $value) {
+    $dataPoints[] = 
+        array("y" => $value['try_kur'], "label" => $value['date']);
+}
 
 ?>
 <!DOCTYPE HTML>
@@ -21,6 +18,21 @@ $dataPoints = array(
 <head>
 
     
+</head>
+
+<body>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <form action="curl.php" method="POST">
+    <button name="ekle" type="submit" class="btn btn-primary float-right">Güncelle</button>
+    </form>
+
+
+
     <script>
         window.onload = function() {
 
@@ -40,17 +52,7 @@ $dataPoints = array(
 
         }
     </script>
-</head>
 
-<body>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-
-    <form action="curl.php" method="POST">
-    <button name="ekle" type="button" class="btn btn-primary">Ekle</button>
-    </form>
 </body>
 
 </html>
